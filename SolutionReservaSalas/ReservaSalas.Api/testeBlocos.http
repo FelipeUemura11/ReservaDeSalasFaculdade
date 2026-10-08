@@ -1,0 +1,29 @@
+### Raiz
+http://localhost:5220
+
+# == BLOCO ======================================
+
+### Bloco Cadastro
+POST http://localhost:5220/blocos
+Content-Type: application/json
+
+{
+    "nome": "Bloco Vermelho"
+}
+
+### Bloco Listar
+GET http://localhost:5220/blocos
+
+### Bloco Buscar
+GET http://localhost:5220/blocos/1
+
+### Bloco Atualizar
+PUT http://localhost:5220/blocos/1
+Content-Type: application/json
+
+{
+    "nome": "Bloco Azul"
+}
+
+### Bloco Deletar
+DELETE http://localhost:5220/blocos/4
