@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ReservaSalas.Api.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    [Migration("20261008143532_InitialCreate")]
+    [Migration("20261008211021_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

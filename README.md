@@ -274,3 +274,5 @@ A IA foi usada em etapas, de forma conversacional:
 **Documentação:** foi pedida a criação deste README seguindo a estrutura exigida pelo professor (identificação, resumo, funcionalidades, descrição, repositório e uso de IA) E ajustamos manualmente algumas coisas.
 
 **Estrutura Relacional:** pedi uma ajuda para saber como fazer a ligação entre as tabelas (relacionamento)
+
+**Arquitetura dos endpoints:** ajuda para arquiteturar os endpoints, forma melhor estruturada para separar as funcinalidades

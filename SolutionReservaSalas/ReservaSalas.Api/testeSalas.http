@@ -1,0 +1,35 @@
+### Raiz
+http://localhost:5220
+
+# == SALAS ======================================
+
+### Sala Cadastro
+POST http://localhost:5220/salas
+Content-Type: application/json
+
+{
+    "nome": "Lab 3",
+    "capacidade": 30,
+    "tipo": "Laboratorio",
+    "blocoId": 6
+}
+
+### Sala Listar
+GET http://localhost:5220/salas
+
+### Sala Buscar
+GET http://localhost:5220/salas/1
+
+### Sala Atualizar
+PUT http://localhost:5220/salas/1
+Content-Type: application/json
+
+{
+    "nome": "Lab 3 - Redes",
+    "capacidade": 35,
+    "tipo": "Laboratorio",
+    "blocoId": 1
+}
+
+### Sala Deletar
+DELETE http://localhost:5220/salas/4

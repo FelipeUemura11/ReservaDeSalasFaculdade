@@ -13,5 +13,6 @@ builder.Services.ConfigureHttpJsonOptions(o =>
 var app = builder.Build();
 
 app.MapBlocoEndpoints();
+app.MapSalaEndpoints();
 
 app.Run();
