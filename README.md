@@ -229,7 +229,7 @@ Depois, acesse o Swagger em `http://localhost:[PORTA]/swagger` para testar os en
 ```
 ReservaSalas.Api/
 ├── db/
-│   └── AppDbContext.cs          # Contexto do EF Core e configuração dos relacionamentos
+│   └── AppDataContext.cs          # Contexto do EF Core e configuração dos relacionamentos
 ├── endpoints/
 │   ├── BlocoEndpoints.cs        # CRUD de blocos
 │   ├── SalaEndpoints.cs         # CRUD de salas, salas livres e agenda
@@ -268,7 +268,9 @@ Este repositório é a entrega oficial do projeto e contém todo o código-fonte
 
 ---
 
-### Forma de uso
+### Uso de IA
 A IA foi usada em etapas, de forma conversacional:
 
 **Documentação:** foi pedida a criação deste README seguindo a estrutura exigida pelo professor (identificação, resumo, funcionalidades, descrição, repositório e uso de IA) E ajustamos manualmente algumas coisas.
+
+**Estrutura Relacional:** pedi uma ajuda para saber como fazer a ligação entre as tabelas (relacionamento)
