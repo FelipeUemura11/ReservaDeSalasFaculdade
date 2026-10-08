@@ -1,7 +1,7 @@
 ### Raiz
 http://localhost:5220
 
-# == BLOCO ======================================
+# == BLOCOS ======================================
 
 ### Bloco Cadastro
 POST http://localhost:5220/blocos
