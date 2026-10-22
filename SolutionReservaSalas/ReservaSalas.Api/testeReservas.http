@@ -1,0 +1,49 @@
+### Raiz
+http://localhost:5220
+
+# == RESERVAS ===================================
+
+### Reserva Cadastro
+POST http://localhost:5220/reservas
+Content-Type: application/json
+
+{
+    "salaId": 1,
+    "responsavel": "Prof. Diogo",
+    "motivo": "Aula de Desenvolvimento de Software Visual",
+    "quantidadePessoas": 30,
+    "inicio": "2026-10-20T19:00:00",
+    "fim": "2026-10-20T22:00:00"
+}
+
+### Reserva Cadastro - conflito de horario (deve retornar 409)
+POST http://localhost:5220/reservas
+Content-Type: application/json
+
+{
+    "salaId": 1,
+    "responsavel": "Prof. Ana",
+    "motivo": "Monitoria",
+    "quantidadePessoas": 10,
+    "inicio": "2026-10-20T21:00:00",
+    "fim": "2026-10-20T23:00:00"
+}
+
+### Reserva Cadastro - capacidade excedida (deve retornar 400)
+POST http://localhost:5220/reservas
+Content-Type: application/json
+
+{
+    "salaId": 1,
+    "responsavel": "Prof. Carlos",
+    "motivo": "Palestra",
+    "quantidadePessoas": 500,
+    "inicio": "2026-10-21T08:00:00",
+    "fim": "2026-10-21T10:00:00"
+}
+
+### Reserva Listar
+GET http://localhost:5220/reservas
+
+### Reserva Buscar
+GET http://localhost:5220/reservas/1
