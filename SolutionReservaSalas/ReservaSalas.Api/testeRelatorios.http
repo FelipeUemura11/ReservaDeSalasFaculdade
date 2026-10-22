@@ -1,0 +1,7 @@
+### Raiz
+http://localhost:5220
+
+# == RELATORIOS =================================
+
+### Relatorio de Ocupacao por sala
+GET http://localhost:5220/relatorios/ocupacao
