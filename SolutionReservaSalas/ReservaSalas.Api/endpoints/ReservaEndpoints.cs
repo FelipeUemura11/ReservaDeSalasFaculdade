@@ -63,6 +63,46 @@ public static class ReservaEndpoints
             ctx.SaveChanges();
             return Results.Created($"/reservas/{reserva.Id}", reserva);
         });
+
+        // PUT /reservas/{id} - altera uma reserva ativa com as mesmas validações do POST
+        grupo.MapPut("/{id:int}", (int id, Reserva reservaAtt, AppDataContext ctx) =>
+        {
+            var reserva = ctx.Reservas.Find(id);
+            if (reserva is null)
+                return Results.NotFound("Reserva não encontrada.");
+
+            if (reserva.Status == StatusReserva.Cancelada)
+                return Results.BadRequest("Não é possível alterar uma reserva cancelada.");
+
+            // ignora a própria reserva na checagem de conflito
+            var erro = ValidarReserva(reservaAtt, ctx, ignorarId: id);
+            if (erro is not null)
+                return erro;
+
+            reserva.SalaId = reservaAtt.SalaId;
+            reserva.Responsavel = reservaAtt.Responsavel;
+            reserva.Motivo = reservaAtt.Motivo;
+            reserva.QuantidadePessoas = reservaAtt.QuantidadePessoas;
+            reserva.Inicio = reservaAtt.Inicio;
+            reserva.Fim = reservaAtt.Fim;
+            ctx.SaveChanges();
+            return Results.Ok(reserva);
+        });
+
+        // PATCH /reservas/{id}/cancelar - cancelamento lógico, mantém o histórico no banco
+        grupo.MapPatch("/{id:int}/cancelar", (int id, AppDataContext ctx) =>
+        {
+            var reserva = ctx.Reservas.Find(id);
+            if (reserva is null)
+                return Results.NotFound("Reserva não encontrada.");
+
+            if (reserva.Status == StatusReserva.Cancelada)
+                return Results.BadRequest("A reserva já está cancelada.");
+
+            reserva.Status = StatusReserva.Cancelada;
+            ctx.SaveChanges();
+            return Results.Ok(reserva);
+        });
     }
 
     // Regras de negócio da reserva. Retorna null quando está tudo certo.
