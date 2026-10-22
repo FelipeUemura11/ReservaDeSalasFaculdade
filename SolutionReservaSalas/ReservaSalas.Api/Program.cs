@@ -10,7 +10,17 @@ builder.Services.AddDbContext<AppDataContext>();
 builder.Services.ConfigureHttpJsonOptions(o =>
     o.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
+// Swagger: tela no navegador para testar os endpoints (http://localhost:5220/swagger)
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+// O Swagger lê essa configuração para mostrar os enums como texto também
+builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(o =>
+    o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
 var app = builder.Build();
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.MapBlocoEndpoints();
 app.MapSalaEndpoints();
