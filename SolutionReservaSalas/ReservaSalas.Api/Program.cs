@@ -15,5 +15,6 @@ var app = builder.Build();
 app.MapBlocoEndpoints();
 app.MapSalaEndpoints();
 app.MapReservaEndpoints();
+app.MapRelatorioEndpoints();
 
 app.Run();
