@@ -106,6 +106,65 @@ public static class SalaEndpoints
             return Results.NoContent();
         });
 
-        // GET /salas/livres e GET /salas/{id}/agenda ficam aqui também (parte do Rafael)
+        // GET /salas/livres?inicio=&fim=&capacidadeMin= - salas sem reserva ativa no período
+        grupo.MapGet("/livres", (DateTime inicio, DateTime fim, int? capacidadeMin, AppDataContext ctx) =>
+        {
+            if (inicio >= fim)
+                return Results.BadRequest("O horário de início deve ser anterior ao de término.");
+
+            var salas = ctx.Salas
+                .Where(s => s.Capacidade >= (capacidadeMin ?? 0))
+                .Where(s => !s.Reservas.Any(r => r.Status == StatusReserva.Ativa
+                                              && r.Inicio < fim
+                                              && inicio < r.Fim))
+                .Select(s => new
+                {
+                    s.Id,
+                    s.Nome,
+                    s.Capacidade,
+                    s.Tipo,
+                    s.BlocoId,
+                    Bloco = s.Bloco!.Nome
+                })
+                .ToList();
+
+            return Results.Ok(salas);
+        });
+
+        // GET /salas/{id}/agenda?data= - reservas ativas da sala no dia, em ordem de horário
+        grupo.MapGet("/{id:int}/agenda", (int id, DateTime data, AppDataContext ctx) =>
+        {
+            var sala = ctx.Salas.Find(id);
+            if (sala is null)
+                return Results.NotFound("Sala não encontrada.");
+
+            var inicioDia = data.Date;
+            var fimDia = inicioDia.AddDays(1);
+
+            // pega também reservas que começam no dia anterior e terminam neste dia
+            var reservas = ctx.Reservas
+                .Where(r => r.SalaId == id
+                         && r.Status == StatusReserva.Ativa
+                         && r.Inicio < fimDia
+                         && r.Fim > inicioDia)
+                .OrderBy(r => r.Inicio)
+                .Select(r => new
+                {
+                    r.Id,
+                    r.Responsavel,
+                    r.Motivo,
+                    r.QuantidadePessoas,
+                    r.Inicio,
+                    r.Fim
+                })
+                .ToList();
+
+            return Results.Ok(new
+            {
+                Sala = sala.Nome,
+                Data = inicioDia.ToString("yyyy-MM-dd"),
+                Reservas = reservas
+            });
+        });
     }
 }
