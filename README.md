@@ -205,8 +205,8 @@ Content-Type: application/json
 
 ```bash
 # 1. Clonar o repositório
-git clone https://github.com/[USUARIO]/[REPOSITORIO].git
-cd [REPOSITORIO]/ReservaSalas.Api
+git clone https://github.com/FelipeUemura11/ReservaDeSalasFaculdade.git
+cd ReservaDeSalasFaculdade/SolutionReservaSalas/ReservaSalas.Api
 
 # 2. Restaurar as dependências
 dotnet restore
@@ -218,7 +218,9 @@ dotnet ef database update
 dotnet run
 ```
 
-Depois, acesse o Swagger em `http://localhost:[PORTA]/swagger` para testar os endpoints.
+O navegador abre automaticamente no Swagger, em `http://localhost:5220/swagger`, onde é possível testar todos os endpoints pelo botão **Try it out**.
+
+Também é possível testar pelos arquivos `.http` da pasta do projeto (`testeBlocos.http`, `testeSalas.http`, `testeReservas.http` e `testeRelatorios.http`), usando a extensão **REST Client** do VS Code.
 
 > 💡 O arquivo `reservas.db` é gerado localmente e está no `.gitignore`. Cada integrante cria o seu com `dotnet ef database update`.
 
@@ -227,22 +229,30 @@ Depois, acesse o Swagger em `http://localhost:[PORTA]/swagger` para testar os en
 ## 📁 Estrutura do Projeto
 
 ```
-ReservaSalas.Api/
-├── db/
-│   └── AppDataContext.cs          # Contexto do EF Core e configuração dos relacionamentos
-├── endpoints/
-│   ├── BlocoEndpoints.cs        # CRUD de blocos
-│   ├── SalaEndpoints.cs         # CRUD de salas, salas livres e agenda
-│   ├── ReservaEndpoints.cs      # Reservas e regras de conflito
-│   └── RelatorioEndpoints.cs    # Relatório de ocupação
-├── Migrations/                  # Migrations geradas pelo EF Core
-├── models/
-│   ├── Bloco.cs
-│   ├── Sala.cs
-│   ├── Reserva.cs
-│   └── Enums.cs
-├── Program.cs                   # Configuração da aplicação e registro das rotas
-└── ReservaSalas.Api.csproj
+SolutionReservaSalas/
+├── SolutionReservaSalas.sln
+└── ReservaSalas.Api/
+    ├── db/
+    │   └── AppDataContext.cs        # Contexto do EF Core e configuração dos relacionamentos
+    ├── endpoints/
+    │   ├── BlocoEndpoints.cs        # CRUD de blocos
+    │   ├── SalaEndpoints.cs         # CRUD de salas, salas livres e agenda
+    │   ├── ReservaEndpoints.cs      # Reservas e regras de conflito
+    │   └── RelatorioEndpoints.cs    # Relatório de ocupação
+    ├── Migrations/                  # Migrations geradas pelo EF Core
+    ├── models/
+    │   ├── Bloco.cs
+    │   ├── Sala.cs
+    │   ├── Reserva.cs
+    │   └── Enums.cs
+    ├── Properties/
+    │   └── launchSettings.json      # Porta da API e abertura automática do Swagger
+    ├── testeBlocos.http             # Requisições de teste de blocos
+    ├── testeSalas.http              # Requisições de teste de salas, salas livres e agenda
+    ├── testeReservas.http           # Requisições de teste de reservas
+    ├── testeRelatorios.http         # Requisição de teste do relatório de ocupação
+    ├── Program.cs                   # Configuração da aplicação e registro das rotas
+    └── ReservaSalas.Api.csproj
 ```
 
 ---
