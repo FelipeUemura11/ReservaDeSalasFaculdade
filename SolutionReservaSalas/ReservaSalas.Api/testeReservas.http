@@ -47,3 +47,19 @@ GET http://localhost:5220/reservas
 
 ### Reserva Buscar
 GET http://localhost:5220/reservas/1
+
+### Reserva Atualizar
+PUT http://localhost:5220/reservas/1
+Content-Type: application/json
+
+{
+    "salaId": 1,
+    "responsavel": "Prof. Diogo",
+    "motivo": "Aula de Desenvolvimento de Software Visual - Revisão",
+    "quantidadePessoas": 25,
+    "inicio": "2026-10-20T19:00:00",
+    "fim": "2026-10-20T21:00:00"
+}
+
+### Reserva Cancelar
+PATCH http://localhost:5220/reservas/1/cancelar
