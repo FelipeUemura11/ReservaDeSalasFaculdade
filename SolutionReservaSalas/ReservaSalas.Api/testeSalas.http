@@ -33,3 +33,12 @@ Content-Type: application/json
 
 ### Sala Deletar
 DELETE http://localhost:5220/salas/4
+
+### Salas Livres no periodo
+GET http://localhost:5220/salas/livres?inicio=2026-10-20T19:00:00&fim=2026-10-20T22:00:00
+
+### Salas Livres no periodo com capacidade minima
+GET http://localhost:5220/salas/livres?inicio=2026-10-20T19:00:00&fim=2026-10-20T22:00:00&capacidadeMin=30
+
+### Sala Agenda do dia
+GET http://localhost:5220/salas/1/agenda?data=2026-10-20
