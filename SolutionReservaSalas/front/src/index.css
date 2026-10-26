@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+.App {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 4rem;
+    font-weight: 800;
+    text-shadow: 4px 4px 1px blue;
+}
+
+img {
+    border-radius: 50%;
+    border-color: blue;
+    border: 5px solid blue;
+    box-shadow: 0 2px 15px rgb(0, 0, 0, 1);
+}
