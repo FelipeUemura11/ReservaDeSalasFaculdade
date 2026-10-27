@@ -1,10 +1,10 @@
 import fallen from "./assets/fallen.webp";
-import { ComponenteModelo } from "./components/ComponenteModelo";
+import { ListarBlocos } from "./components/ListarBlocos";
 
 function App() {
     return (
         <>
-            <ComponenteModelo />
+            <ListarBlocos />
             <div className="App">
                 <div>
                     <img src={fallen} className="App-logo" alt="logo" />
