@@ -272,7 +272,7 @@ SolutionReservaSalas/
 
 | Integrante | Responsabilidade principal |
 |---|---|
-| `Felipe` | Setup do front: Tailwind CSS, React Router, CORS na API, layout e estrutura de pastas |
+| `Felipe` | Setup do front: Tailwind CSS, React Router, Axios, CORS na API, layout e estrutura de pastas |
 | `Felipe` | Telas de Blocos e Salas |
 | `Rafael` | Telas de Reservas (listagem, formulário de criação/edição e cancelamento) |
 | `Rafael` | Telas de Salas livres, Agenda da sala, Relatório de ocupação e documentação |
@@ -283,20 +283,21 @@ SolutionReservaSalas/
 1. Instalar e configurar o **Tailwind CSS v3** (compatível com o Create React App).
 2. Instalar e configurar o **React Router** (`BrowserRouter` e declaração de todas as rotas).
 3. Habilitar **CORS** na API para permitir requisições do front (`http://localhost:3000`).
-4. Criar a estrutura de pastas (`pages/`, `components/`, `services/`, `types/`) e o layout com menu de navegação.
-5. Tela de **Blocos**: listar, cadastrar, editar e excluir (com aviso quando o bloco possui salas).
-6. Tela de **Salas**: CRUD com seleção de bloco e tipo (com aviso quando a sala possui reservas).
+4. Instalar o **Axios** e criar a instância base em `services/` apontando para a API (`http://localhost:5220`).
+5. Criar a estrutura de pastas (`pages/`, `components/`, `services/`, `types/`) e o layout com menu de navegação.
+6. Tela de **Blocos**: listar, cadastrar, editar e excluir (com aviso quando o bloco possui salas).
+7. Tela de **Salas**: CRUD com seleção de bloco e tipo (com aviso quando a sala possui reservas).
 
 **Rafael**
 
-7. Tela de **Reservas**: listagem com status e botão de cancelamento.
-8. **Formulário de Reserva** (criar/editar), exibindo os erros `400`, `404` e `409` da API.
-9. Tela de **Salas Livres**: filtros de período e capacidade mínima.
-10. Tela de **Agenda da Sala**: seleção de data e listagem das reservas do dia.
-11. Tela de **Relatório de Ocupação**: total de reservas e horas por sala.
-12. **Documentação**: seção do front-end no README (tecnologias, como executar e estrutura).
+8. Tela de **Reservas**: listagem com status e botão de cancelamento.
+9. **Formulário de Reserva** (criar/editar), exibindo os erros `400`, `404` e `409` da API.
+10. Tela de **Salas Livres**: filtros de período e capacidade mínima.
+11. Tela de **Agenda da Sala**: seleção de data e listagem das reservas do dia.
+12. Tela de **Relatório de Ocupação**: total de reservas e horas por sala.
+13. **Documentação**: seção do front-end no README (tecnologias, como executar e estrutura).
 
-> As tarefas 1 a 4 são pré-requisito para as demais e devem ser entregues primeiro.
+> As tarefas 1 a 5 são pré-requisito para as demais e devem ser entregues primeiro.
 
 ---
 
