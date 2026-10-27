@@ -17,7 +17,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(o =>
     o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
+// CORS: permite que o front (React, http://localhost:3000) chame a API
+builder.Services.AddCors(o => o.AddDefaultPolicy(p =>
+    p.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod()));
+
 var app = builder.Build();
+
+app.UseCors();
 
 app.UseSwagger();
 app.UseSwaggerUI();
