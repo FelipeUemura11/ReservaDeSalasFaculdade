@@ -35,10 +35,9 @@ export function Home() {
                             key={p.to}
                             to={p.to}
                             style={{ backgroundImage: `url(${p.imagem})` }}
-                            className="group relative flex min-h-48 items-start overflow-hidden border border-gray-200 bg-cover bg-center transition-shadow hover:shadow-md"
+                            className="group relative flex min-h-48 items-start overflow-hidden border border-gray-200 bg-cover bg-center transition-shadow hover:shadow-lg"
                         >
-                            {/* Degradê para manter o texto legível sobre a foto */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/15 to-transparent transition-opacity group-hover:opacity-90" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/15 to-transparent transition-opacity group-hover:opacity-80" />
                             <h2 className="relative p-5 text-2xl font-bold text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.5)]">
                                 {p.titulo}
                             </h2>
@@ -48,7 +47,7 @@ export function Home() {
             </section>
 
             <section>
-                <h2 className="mb-4 text-xl font-semibold text-white">
+                <h2 className="mb-4 text-2xl font-semibold text-white">
                     O que o sistema faz
                 </h2>
                 <ul className="grid gap-2 text-sm text-gray-700 sm:grid-cols-2">
