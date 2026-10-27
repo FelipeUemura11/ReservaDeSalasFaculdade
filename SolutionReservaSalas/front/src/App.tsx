@@ -1,17 +1,16 @@
-import fallen from "./assets/fallen.webp";
-import { ListarBlocos } from "./components/ListarBlocos";
+import { Route, Routes } from "react-router";
+import { Layout } from "./layout/Layout";
 
 function App() {
     return (
-        <>
-            <ListarBlocos />
-            <div className="App">
-                <div>
-                    <img src={fallen} className="App-logo" alt="logo" />
-                    <p>CRIANDO REACT</p>
-                </div>
-            </div>
-        </>
+        <Routes>
+            <Route path="/" element={<Layout />}>
+                <Route path="/"/>
+                <Route path="/"/>
+                <Route path="/"/>
+                <Route path="/"/>
+            </Route>
+        </Routes>
     );
 }
 
