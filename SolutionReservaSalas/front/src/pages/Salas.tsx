@@ -1,4 +1,4 @@
-export function Editar(){
+export function Salas(){
     return (
         <>
         </>

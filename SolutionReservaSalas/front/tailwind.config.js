@@ -2,8 +2,14 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      // Cores definidas em src/index.css (:root)
+      colors: {
+        primary: "var(--primary)",
+        secondary: "var(--secondary)",
+        third: "var(--third)",
+      },
+    },
   },
   plugins: [],
 }
-
