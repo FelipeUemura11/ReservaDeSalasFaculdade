@@ -306,7 +306,7 @@ Este repositório é a entrega oficial do projeto e contém todo o código-fonte
 
 🔗 **Link:** https://github.com/FelipeUemura11/ReservaDeSalasFaculdade
 
-🎥 **Vídeo de apresentação:** `[LINK DO YOUTUBE / GOOGLE DRIVE]`
+🎥 **Vídeo de apresentação:** https://www.youtube.com/watch?v=qyp98gLnIe0
 
 ---
 
