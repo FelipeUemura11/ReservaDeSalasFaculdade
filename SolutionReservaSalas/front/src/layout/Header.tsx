@@ -1,5 +1,5 @@
 import { NavLink } from "react-router";
-import logoUp from "../assets/logoUp.svg";
+import logo from "../assets/logo-azul.svg";
 
 function linkClass({ isActive }: { isActive: boolean }) {
     return isActive
@@ -9,16 +9,16 @@ function linkClass({ isActive }: { isActive: boolean }) {
 
 export function Header() {
     return (
-        <header className="bg-white shadow">
+        <header className="mt-4 bg-white max-w-7xl rounded-br-[3rem] shadow-[12px_12px_1px_-1px_var(--secondary)]">
             <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 px-4 py-3">
                 <NavLink to="/">
                     <img
-                        src={logoUp}
+                        src={logo}
                         alt="Universidade Positivo - Reserva de Salas"
-                        className="h-10 w-auto"
+                        className="h-14 w-auto"
                     />
                 </NavLink>
-                <nav className="flex flex-wrap gap-1 text-sm font-medium">
+                <nav className="flex flex-wrap gap-1 text-md font-medium">
                     <NavLink to="/blocos" className={linkClass}>
                         Blocos
                     </NavLink>
