@@ -25,6 +25,15 @@ const funcionalidades = [
 export function Home() {
     return (
         <div className="space-y-10">
+            <div
+                aria-hidden
+                className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+            >
+                <div className="absolute -left-32 top-1/4 h-96 w-96 rounded-full bg-secondary/40 blur-3xl motion-safe:animate-flutuar" />
+                <div className="absolute -right-24 bottom-0 h-[28rem] w-[28rem] rounded-full bg-third/15 blur-3xl motion-safe:animate-flutuar-lento" />
+                <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.15)_1px,transparent_1px)] [background-size:24px_24px] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
+            </div>
+
             <section>
                 <h1 className="mb-4 text-4xl font-semibold text-white">
                     Acesso rápido

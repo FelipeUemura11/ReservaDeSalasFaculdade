@@ -9,6 +9,16 @@ module.exports = {
         secondary: "var(--secondary)",
         third: "var(--third)",
       },
+      keyframes: {
+        flutuar: {
+          "0%, 100%": { transform: "translate(0, 0) scale(1)" },
+          "50%": { transform: "translate(3rem, -2rem) scale(1.1)" },
+        },
+      },
+      animation: {
+        flutuar: "flutuar 18s ease-in-out infinite",
+        "flutuar-lento": "flutuar 26s ease-in-out infinite reverse",
+      },
     },
   },
   plugins: [],

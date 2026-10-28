@@ -50,14 +50,14 @@ export function Blocos() {
                 </button>
             </div>
 
-            {carregando && <p className="text-gray-500">Carregando...</p>}
+            {carregando && <p className="text-white">Carregando...</p>}
 
             {erro && (
                 <p className="rounded-md bg-red-50 p-3 text-red-700">{erro}</p>
             )}
 
             {!carregando && !erro && blocos.length === 0 && (
-                <p className="text-gray-500">Nenhum bloco cadastrado.</p>
+                <p className="text-white">Nenhum bloco cadastrado.</p>
             )}
 
             {blocos.length > 0 && (
