@@ -4,13 +4,13 @@ import logo from "../assets/logo-azul.svg";
 function linkClass({ isActive }: { isActive: boolean }) {
     return isActive
         ? "rounded-md px-3 py-2 text-primary"
-        : "rounded-md px-3 py-2 text-primary hover:text-secondary transition-colors hover:underline";
+        : "rounded-md px-3 py-2 text-primary hover:text-secondary transition-colors";
 }
 
 export function Header() {
     return (
-        <header className="mt-4 bg-white max-w-7xl rounded-br-[3rem] shadow-[12px_12px_1px_-1px_var(--secondary)]">
-            <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 px-4 py-3">
+        <header className="mt-4 bg-white w-[85%] rounded-br-[3rem] shadow-[12px_12px_1px_-1px_var(--secondary)]">
+            <div className="flex flex-wrap items-center justify-between gap-2 px-[4%] py-3">
                 <NavLink to="/">
                     <img
                         src={logo}
@@ -24,6 +24,12 @@ export function Header() {
                     </NavLink>
                     <NavLink to="/salas" className={linkClass}>
                         Salas
+                    </NavLink>
+                    <NavLink to="/reservas" className={linkClass}>
+                        Reservas
+                    </NavLink>
+                    <NavLink to="/relatorios" className={linkClass}>
+                        Relatorio
                     </NavLink>
                 </nav>
             </div>
