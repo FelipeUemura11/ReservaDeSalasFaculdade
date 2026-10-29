@@ -18,13 +18,21 @@ const CONTORNO_PREDIO =
 const MAX_SALAS_TOOLTIP = 6;
 
 // Bloco desenhado como no mapa: prédio em "H" com as entradas em cinza
-export function MapaBloco({ bloco, salas, onEditar, onExcluir }: MapaBlocoProps) {
+export function MapaBloco({
+    bloco,
+    salas,
+    onEditar,
+    onExcluir,
+}: MapaBlocoProps) {
     const salasVisiveis = salas.slice(0, MAX_SALAS_TOOLTIP);
     const salasRestantes = salas.length - salasVisiveis.length;
 
     return (
-        <div className="flex flex-col items-center gap-3 rounded-lg bg-[#F5F5F5] p-4 shadow">
-            <h2 className="w-full truncate text-center text-lg font-semibold text-gray-700" title={bloco.nome}>
+        <div className="flex flex-col items-center gap-3 rounded-md bg-[#F5F5F5] p-5 shadow-xl transition-transform hover:scale-[1.03]">
+            <h2
+                className="w-full truncate text-center text-lg font-semibold text-gray-700"
+                title={bloco.nome}
+            >
                 {bloco.nome}
             </h2>
 
@@ -36,8 +44,24 @@ export function MapaBloco({ bloco, salas, onEditar, onExcluir }: MapaBlocoProps)
                     aria-label={`${bloco.nome}: ${salas.length} ${salas.length === 1 ? "sala" : "salas"}`}
                 >
                     {/* Entradas (topo e base) */}
-                    <rect x="293" y="73" width="178" height="48" fill="#E8E9EE" stroke="#D5D7E0" strokeWidth="2" />
-                    <rect x="288" y="701" width="186" height="50" fill="#E8E9EE" stroke="#D5D7E0" strokeWidth="2" />
+                    <rect
+                        x="293"
+                        y="73"
+                        width="178"
+                        height="48"
+                        fill="#E8E9EE"
+                        stroke="#D5D7E0"
+                        strokeWidth="2"
+                    />
+                    <rect
+                        x="288"
+                        y="701"
+                        width="186"
+                        height="50"
+                        fill="#E8E9EE"
+                        stroke="#D5D7E0"
+                        strokeWidth="2"
+                    />
 
                     <polygon
                         points={CONTORNO_PREDIO}
@@ -64,22 +88,32 @@ export function MapaBloco({ bloco, salas, onEditar, onExcluir }: MapaBlocoProps)
                             {salasVisiveis.map((sala) => (
                                 <li key={sala.id}>
                                     {sala.nome}{" "}
-                                    <span className="text-gray-400">({sala.capacidade} lugares)</span>
+                                    <span className="text-gray-400">
+                                        ({sala.capacidade} lugares)
+                                    </span>
                                 </li>
                             ))}
                         </ul>
                     )}
                     {salasRestantes > 0 && (
-                        <p className="mt-1 text-gray-400">+ {salasRestantes} outras</p>
+                        <p className="mt-1 text-gray-400">
+                            + {salasRestantes} outras
+                        </p>
                     )}
                 </div>
             </div>
 
             <div className="space-x-4 text-sm">
-                <button onClick={onEditar} className="font-medium text-secondary hover:underline">
+                <button
+                    onClick={onEditar}
+                    className="font-medium text-secondary hover:underline"
+                >
                     Editar
                 </button>
-                <button onClick={onExcluir} className="font-medium text-red-600 hover:underline">
+                <button
+                    onClick={onExcluir}
+                    className="font-medium text-red-600 hover:underline"
+                >
                     Excluir
                 </button>
             </div>

@@ -48,10 +48,10 @@ export function Blocos() {
     return (
         <section>
             <div className="mb-6 flex items-center justify-between">
-                <h1 className="text-2xl font-bold text-white">Blocos</h1>
+                <h1 className="text-4xl font-bold text-white">Blocos</h1>
                 <button
                     onClick={() => setAcao({ tipo: "cadastrar" })}
-                    className="rounded-md bg-secondary px-4 py-2 text-sm font-medium text-white hover:bg-primary"
+                    className="rounded-3xl bg-secondary px-4 py-2 text-md font-semibold text-white hover:bg-blue-500 transition-colors shadow-xl"
                 >
                     Novo bloco
                 </button>
