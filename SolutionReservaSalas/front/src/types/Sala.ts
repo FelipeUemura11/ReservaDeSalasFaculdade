@@ -9,3 +9,6 @@ export interface Sala {
     blocoId: number;
     bloco: string;
 }
+
+// Corpo enviado em POST/PUT /salas (id e nome do bloco são gerados pela API)
+export type DadosSala = Omit<Sala, "id" | "bloco">;

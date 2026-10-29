@@ -16,7 +16,7 @@ const pagina = [
 ];
 
 const funcionalidades = [
-    "Prevenção automática de conflitos de horário",
+    "Prevenção de conflitos de horário",
     "Validação de capacidade da sala",
     "Busca de salas livres por período",
     "Agenda diária e relatório de ocupação",

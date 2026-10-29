@@ -11,14 +11,14 @@ interface FormBlocoProps {
 
 // Formulário compartilhado entre o cadastro e a edição de blocos
 export function FormBloco({
-    nomeInicial = "",
+    nomeInicial,
     textoBotao,
     salvando,
     erro,
     onSalvar,
     onCancelar,
 }: FormBlocoProps) {
-    const [nome, setNome] = useState(nomeInicial);
+    const [nome, setNome] = useState(nomeInicial ?? "");
 
     function enviar(e: FormEvent) {
         e.preventDefault();
@@ -32,10 +32,11 @@ export function FormBloco({
                     Nome
                 </label>
                 <input
+                    type="text"
                     id="nome"
                     value={nome}
                     onChange={(e) => setNome(e.target.value)}
-                    placeholder="Ex: Bloco Azul"
+                    placeholder="Ex: Bloco Vermelho"
                     className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-secondary focus:outline-none"
                     autoFocus
                     required

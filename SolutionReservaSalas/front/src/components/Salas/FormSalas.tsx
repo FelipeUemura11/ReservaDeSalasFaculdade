@@ -1,6 +1,0 @@
-export function FormSalas(){
-    return(
-        <>
-        </>
-    );
-}
