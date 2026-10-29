@@ -17,7 +17,8 @@ namespace ReservaSalas.Api.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Nome = table.Column<string>(type: "TEXT", nullable: false)
+                    Nome = table.Column<string>(type: "TEXT", nullable: false),
+                    Cor = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

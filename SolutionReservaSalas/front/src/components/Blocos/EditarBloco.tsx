@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { api, mensagemErro } from "../../services/api";
-import { Bloco } from "../../types/Bloco";
+import { Bloco, DadosBloco } from "../../types/Bloco";
 import { Modal } from "../Modal";
 import { FormBloco } from "./FormBloco";
 
@@ -14,11 +14,11 @@ export function EditarBloco({ bloco, onConcluido, onCancelar }: EditarBlocoProps
     const [erro, setErro] = useState("");
     const [salvando, setSalvando] = useState(false);
 
-    function salvar(nome: string) {
+    function salvar(dados: DadosBloco) {
         setErro("");
         setSalvando(true);
 
-        api.put(`/blocos/${bloco.id}`, { nome })
+        api.put(`/blocos/${bloco.id}`, dados)
             .then(onConcluido)
             .catch((e) => {
                 setErro(mensagemErro(e));
@@ -29,7 +29,7 @@ export function EditarBloco({ bloco, onConcluido, onCancelar }: EditarBlocoProps
     return (
         <Modal titulo="Editar bloco" onFechar={onCancelar}>
             <FormBloco
-                nomeInicial={bloco.nome}
+                blocoInicial={bloco}
                 textoBotao="Salvar"
                 salvando={salvando}
                 erro={erro}

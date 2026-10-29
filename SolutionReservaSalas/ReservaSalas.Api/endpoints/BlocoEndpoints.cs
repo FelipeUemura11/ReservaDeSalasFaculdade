@@ -1,5 +1,10 @@
+using System.Text.RegularExpressions;
+
 public static class BlocoEndpoints
 {
+    // Aceita só #RRGGBB, o formato que o <input type="color"> do front envia
+    private static readonly Regex FormatoCor = new("^#[0-9A-Fa-f]{6}$");
+
     public static void MapBlocoEndpoints(this WebApplication app)
     {
         var grupo = app.MapGroup("/blocos");
@@ -8,7 +13,10 @@ public static class BlocoEndpoints
         grupo.MapPost("/", (Bloco bloco, AppDataContext ctx) =>
         {
             if (string.IsNullOrWhiteSpace(bloco.Nome))
-                return Results.BadRequest("O nome do bloco é obrigatório.");   
+                return Results.BadRequest("O nome do bloco é obrigatório.");
+
+            if (!FormatoCor.IsMatch(bloco.Cor))
+                return Results.BadRequest("A cor deve estar no formato #RRGGBB.");
 
             ctx.Blocos.Add(bloco);
             ctx.SaveChanges();
@@ -42,7 +50,11 @@ public static class BlocoEndpoints
             if(string.IsNullOrWhiteSpace(blocoAtt.Nome))
                 return Results.BadRequest("O nome do bloco é obrigatório.");
 
+            if (!FormatoCor.IsMatch(blocoAtt.Cor))
+                return Results.BadRequest("A cor deve estar no formato #RRGGBB.");
+
             bloco.Nome = blocoAtt.Nome;
+            bloco.Cor = blocoAtt.Cor;
             ctx.SaveChanges();
 
             return Results.Ok(bloco); 
