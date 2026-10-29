@@ -43,7 +43,7 @@ export function DeletarBloco({ bloco, onConcluido, onCancelar }: DeletarBlocoPro
         <Modal titulo="Excluir bloco" onFechar={onCancelar}>
             <div className="space-y-4">
                 <p>
-                    Tem certeza que deseja excluir o bloco{" "}
+                    Tem certeza que deseja excluir o {" "}
                     <strong>{bloco.nome}</strong>?
                 </p>
 
