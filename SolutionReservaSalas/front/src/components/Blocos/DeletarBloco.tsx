@@ -50,7 +50,7 @@ export function DeletarBloco({ bloco, onConcluido, onCancelar }: DeletarBlocoPro
                 {carregando && <p className="text-sm text-gray-500">Verificando salas...</p>}
 
                 {salas.length > 0 && (
-                    <div className="rounded-md bg-yellow-50 p-3 text-sm text-yellow-800">
+                    <div className="rounded-md bg-blue-50 p-3 text-sm text-blue-800">
                         <p className="font-medium">
                             Este bloco possui {salas.length}{" "}
                             {salas.length === 1 ? "sala" : "salas"} e não pode ser excluído.
