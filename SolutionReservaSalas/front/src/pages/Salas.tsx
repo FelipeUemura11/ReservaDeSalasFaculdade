@@ -37,10 +37,10 @@ export function Salas(){
     return (
         <section>
             <div className="mb-6 flex items-center justify-between">
-                <h1 className="text-2xl font-bold text-white">Salas</h1>
+                <h1 className="text-4xl font-bold text-white">Salas</h1>
                 <button
                     onClick={() => setAcao({ tipo: "cadastrar" })}
-                    className="rounded-md bg-secondary px-4 py-2 text-sm font-medium text-white hover:bg-primary"
+                    className="rounded-3xl bg-secondary hover:bg-blue-500 px-4 py-2 text-md font-semibold text-white shadow-xl"
                 >
                     Nova Sala
                 </button>

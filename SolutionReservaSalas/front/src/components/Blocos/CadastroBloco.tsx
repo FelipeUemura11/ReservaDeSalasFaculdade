@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { api, mensagemErro } from "../../services/api";
+import { DadosBloco } from "../../types/Bloco";
 import { Modal } from "../Modal";
 import { FormBloco } from "./FormBloco";
 
@@ -12,11 +13,11 @@ export function CadastroBloco({ onConcluido, onCancelar }: CadastroBlocoProps) {
     const [erro, setErro] = useState("");
     const [salvando, setSalvando] = useState(false);
 
-    function salvar(nome: string) {
+    function salvar(dados: DadosBloco) {
         setErro("");
         setSalvando(true);
 
-        api.post("/blocos", { nome })
+        api.post("/blocos", dados)
             .then(onConcluido)
             .catch((e) => {
                 setErro(mensagemErro(e));

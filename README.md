@@ -36,7 +36,7 @@ O **ReservaSalas API** é um sistema back-end desenvolvido em C# com .NET 8 (Min
 
 ## ✨ Funcionalidades
 
-- 🏢 **Gerenciamento de Blocos:** cadastro, listagem, edição e exclusão de blocos/prédios
+- 🏢 **Gerenciamento de Blocos:** cadastro, listagem, edição e exclusão de blocos/prédios, com uma cor para exibição no mapa do front
 - 🚪 **Gerenciamento de Salas:** CRUD completo de salas vinculadas a um bloco, com tipo e capacidade
 - 📅 **Criação de Reservas:** agendamento de uma sala com responsável, motivo, número de pessoas e período
 - ⛔ **Prevenção de Conflitos:** bloqueio automático de reservas com horários sobrepostos na mesma sala
@@ -53,6 +53,8 @@ O **ReservaSalas API** é um sistema back-end desenvolvido em C# com .NET 8 (Min
 
 ### 🏢 Gerenciamento de Blocos
 Os blocos representam os prédios ou alas da instituição (ex: "Bloco Azul", "Bloco B"). São a base da hierarquia do sistema, porque toda sala pertence a um bloco. A API permite criar, listar, buscar por ID, editar e excluir blocos. Um bloco que ainda possui salas não pode ser excluído, o que evita salas órfãs no banco.
+
+Cada bloco também guarda uma **cor** em hexadecimal (`#RRGGBB`), usada só no visual do front. A API valida o formato no cadastro e na edição e usa vermelho (`#ED1C24`) quando nenhuma cor é enviada. No front, a tela de Blocos desenha cada bloco como o prédio visto de cima, no estilo de um mapa, pintado com a cor escolhida. Ao passar o mouse sobre o desenho, aparecem as salas do bloco com a capacidade de cada uma.
 
 ### 🚪 Gerenciamento de Salas
 Esta é a entidade com **CRUD completo**. Cada sala tem nome, capacidade máxima de pessoas e tipo (`SalaDeAula`, `Laboratorio` ou `Auditorio`), e está obrigatoriamente vinculada a um bloco já cadastrado (**relacionamento 1:N** via chave estrangeira `BlocoId`). Na listagem, cada sala aparece com o nome do seu bloco. Uma sala com reservas registradas não pode ser excluída.
@@ -104,8 +106,8 @@ Os relacionamentos usam `DeleteBehavior.Restrict` no Entity Framework. Assim, n�
 ├──────────────┤        ├───────────────────┤        ├──────────────────────┤
 │ Id (PK)      │ 1    N │ Id (PK)           │ 1    N │ Id (PK)              │
 │ Nome         │───────<│ Nome              │───────<│ SalaId (FK)          │
-└──────────────┘        │ Capacidade        │        │ Responsavel          │
-                        │ Tipo              │        │ Motivo               │
+│ Cor          │        │ Capacidade        │        │ Responsavel          │
+└──────────────┘        │ Tipo              │        │ Motivo               │
                         │ BlocoId (FK)      │        │ QuantidadePessoas    │
                         └───────────────────┘        │ Inicio               │
                                                      │ Fim                  │
@@ -126,8 +128,8 @@ Os relacionamentos usam `DeleteBehavior.Restrict` no Entity Framework. Assim, n�
 |---|---|---|
 | `GET` | `/blocos` | Lista todos os blocos |
 | `GET` | `/blocos/{id}` | Busca um bloco por ID |
-| `POST` | `/blocos` | Cadastra um bloco |
-| `PUT` | `/blocos/{id}` | Atualiza um bloco |
+| `POST` | `/blocos` | Cadastra um bloco (nome e cor) |
+| `PUT` | `/blocos/{id}` | Atualiza o nome e a cor de um bloco |
 | `DELETE` | `/blocos/{id}` | Remove um bloco (se não tiver salas) |
 
 ### Salas
@@ -285,7 +287,7 @@ SolutionReservaSalas/
 3. Habilitar **CORS** na API para permitir requisições do front (`http://localhost:3000`).
 4. Instalar o **Axios** e criar a instância base em `services/` apontando para a API (`http://localhost:5220`).
 5. Criar a estrutura de pastas (`pages/`, `components/`, `services/`, `types/`) e o layout com menu de navegação.
-6. Tela de **Blocos**: listar, cadastrar, editar e excluir (com aviso quando o bloco possui salas).
+6. Tela de **Blocos**: listar, cadastrar, editar e excluir (com aviso quando o bloco possui salas). Os blocos aparecem desenhados como prédios vistos de cima, com a cor escolhida no cadastro e as salas do bloco ao passar o mouse.
 7. Tela de **Salas**: CRUD com seleção de bloco e tipo (com aviso quando a sala possui reservas).
 
 **Rafael**
@@ -321,3 +323,5 @@ A IA foi usada em etapas, de forma conversacional:
 **Arquitetura dos endpoints:** ajuda para arquiteturar os endpoints, forma melhor estruturada para separar as funcinalidades
 
 **Divisão das tarefas do front-end:** pedimos ajuda para separar as tarefas do front-end entre os integrantes, seguindo a mesma divisão usada no back-end.
+
+**Visual da página de Blocos:** pedimos à IA para trocar a tabela de blocos por um desenho de cada bloco no estilo do mapa do campus visto de cima, usando como referência uma imagem do Bloco Vermelho tirada do GPS. Também pedimos que, ao passar o mouse, aparecesse uma descrição do bloco (a IA sugeriu mostrar as salas e a capacidade de cada uma) e que o cadastro tivesse a opção de escolher uma cor, só para o visual. Para a cor ficar salva, a IA adicionou a propriedade `Cor` no modelo `Bloco`, a validação nos endpoints e a migration `AdicionarCorBloco`. Depois ajustamos manualmente as cores sugeridas e pedimos para mover o nome do bloco para cima do desenho.

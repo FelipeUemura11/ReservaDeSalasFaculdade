@@ -1,28 +1,39 @@
 import { FormEvent, useState } from "react";
+import { COR_PADRAO_BLOCO, DadosBloco } from "../../types/Bloco";
 
 interface FormBlocoProps {
-    nomeInicial?: string;
+    blocoInicial?: DadosBloco;
     textoBotao: string;
     salvando: boolean;
     erro: string;
-    onSalvar: (nome: string) => void;
+    onSalvar: (dados: DadosBloco) => void;
     onCancelar: () => void;
 }
 
+// Sugestões rápidas; o input de cor permite qualquer outra
+const CORES_SUGERIDAS = [
+    { valor: COR_PADRAO_BLOCO, nome: "Vermelho" },
+    { valor: "#009EED", nome: "Azul" },
+    { valor: "#FDE047", nome: "Amarelo" },
+    { valor: "#EDE8D0", nome: "Bege" },
+    { valor: "#B97A57", nome: "Marrom" },
+];
+
 // Formulário compartilhado entre o cadastro e a edição de blocos
 export function FormBloco({
-    nomeInicial,
+    blocoInicial,
     textoBotao,
     salvando,
     erro,
     onSalvar,
     onCancelar,
 }: FormBlocoProps) {
-    const [nome, setNome] = useState(nomeInicial ?? "");
+    const [nome, setNome] = useState(blocoInicial?.nome ?? "");
+    const [cor, setCor] = useState(blocoInicial?.cor ?? COR_PADRAO_BLOCO);
 
     function enviar(e: FormEvent) {
         e.preventDefault();
-        onSalvar(nome);
+        onSalvar({ nome, cor });
     }
 
     return (
@@ -41,6 +52,41 @@ export function FormBloco({
                     autoFocus
                     required
                 />
+            </div>
+
+            <div>
+                <span className="mb-1 block text-sm font-medium">Cor no mapa</span>
+                <div className="flex flex-wrap items-center gap-2">
+                    {CORES_SUGERIDAS.map((sugestao) => (
+                        <button
+                            key={sugestao.valor}
+                            type="button"
+                            onClick={() => setCor(sugestao.valor)}
+                            title={sugestao.nome}
+                            aria-label={sugestao.nome}
+                            aria-pressed={cor.toUpperCase() === sugestao.valor}
+                            style={{ backgroundColor: sugestao.valor }}
+                            className={`h-8 w-8 rounded-full border border-gray-300 transition ${
+                                cor.toUpperCase() === sugestao.valor
+                                    ? "ring-2 ring-secondary ring-offset-2"
+                                    : "hover:scale-110"
+                            }`}
+                        />
+                    ))}
+                    <label
+                        htmlFor="cor"
+                        className="ml-1 flex cursor-pointer items-center gap-2 text-sm text-gray-600"
+                    >
+                        <input
+                            type="color"
+                            id="cor"
+                            value={cor}
+                            onChange={(e) => setCor(e.target.value)}
+                            className="h-8 w-10 cursor-pointer rounded border border-gray-300 bg-white"
+                        />
+                        Outra
+                    </label>
+                </div>
             </div>
 
             {erro && (

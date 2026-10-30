@@ -2,8 +2,10 @@ import { useCallback, useEffect, useState } from "react";
 import { CadastroBloco } from "../components/Blocos/CadastroBloco";
 import { DeletarBloco } from "../components/Blocos/DeletarBloco";
 import { EditarBloco } from "../components/Blocos/EditarBloco";
+import { MapaBloco } from "../components/Blocos/MapaBloco";
 import { api, mensagemErro } from "../services/api";
 import { Bloco } from "../types/Bloco";
+import { Sala } from "../types/Sala";
 
 // Qual janela está aberta sobre a lista
 type Acao =
@@ -13,14 +15,19 @@ type Acao =
 
 export function Blocos() {
     const [blocos, setBlocos] = useState<Bloco[]>([]);
+    const [salas, setSalas] = useState<Sala[]>([]);
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState("");
     const [acao, setAcao] = useState<Acao | null>(null);
 
+    // Busca blocos e salas juntos; as salas alimentam o tooltip de cada bloco
     const carregar = useCallback(() => {
         setErro("");
-        api.get<Bloco[]>("/blocos")
-            .then((resposta) => setBlocos(resposta.data))
+        Promise.all([api.get<Bloco[]>("/blocos"), api.get<Sala[]>("/salas")])
+            .then(([respostaBlocos, respostaSalas]) => {
+                setBlocos(respostaBlocos.data);
+                setSalas(respostaSalas.data);
+            })
             .catch((e) => setErro(mensagemErro(e)))
             .finally(() => setCarregando(false));
     }, []);
@@ -41,10 +48,10 @@ export function Blocos() {
     return (
         <section>
             <div className="mb-6 flex items-center justify-between">
-                <h1 className="text-2xl font-bold text-white">Blocos</h1>
+                <h1 className="text-4xl font-bold text-white">Blocos</h1>
                 <button
                     onClick={() => setAcao({ tipo: "cadastrar" })}
-                    className="rounded-md bg-secondary px-4 py-2 text-sm font-medium text-white hover:bg-primary"
+                    className="rounded-3xl bg-secondary px-4 py-2 text-md font-semibold text-white hover:bg-blue-500 transition-colors shadow-xl"
                 >
                     Novo bloco
                 </button>
@@ -61,45 +68,18 @@ export function Blocos() {
             )}
 
             {blocos.length > 0 && (
-                <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
-                    <table className="w-full text-left text-sm">
-                        <thead className="bg-gray-100 text-gray-600">
-                            <tr>
-                                <th className="px-4 py-3 font-medium">ID</th>
-                                <th className="px-4 py-3 font-medium">Nome</th>
-                                <th className="px-4 py-3 text-right font-medium">
-                                    Ações
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {blocos.map((bloco) => (
-                                <tr
-                                    key={bloco.id}
-                                    className="border-t border-gray-100"
-                                >
-                                    <td className="px-4 py-3 text-gray-500">
-                                        {bloco.id}
-                                    </td>
-                                    <td className="px-4 py-3">{bloco.nome}</td>
-                                    <td className="space-x-3 px-4 py-3 text-right">
-                                        <button
-                                            onClick={() => setAcao({ tipo: "editar", bloco })}
-                                            className="font-medium text-secondary hover:underline"
-                                        >
-                                            Editar
-                                        </button>
-                                        <button
-                                            onClick={() => setAcao({ tipo: "deletar", bloco })}
-                                            className="font-medium text-red-600 hover:underline"
-                                        >
-                                            Excluir
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+                    {blocos.map((bloco) => (
+                        <MapaBloco
+                            key={bloco.id}
+                            bloco={bloco}
+                            salas={salas.filter((s) => s.blocoId === bloco.id)}
+                            onEditar={() => setAcao({ tipo: "editar", bloco })}
+                            onExcluir={() =>
+                                setAcao({ tipo: "deletar", bloco })
+                            }
+                        />
+                    ))}
                 </div>
             )}
 
@@ -107,10 +87,18 @@ export function Blocos() {
                 <CadastroBloco onConcluido={concluir} onCancelar={fechar} />
             )}
             {acao?.tipo === "editar" && (
-                <EditarBloco bloco={acao.bloco} onConcluido={concluir} onCancelar={fechar} />
+                <EditarBloco
+                    bloco={acao.bloco}
+                    onConcluido={concluir}
+                    onCancelar={fechar}
+                />
             )}
             {acao?.tipo === "deletar" && (
-                <DeletarBloco bloco={acao.bloco} onConcluido={concluir} onCancelar={fechar} />
+                <DeletarBloco
+                    bloco={acao.bloco}
+                    onConcluido={concluir}
+                    onCancelar={fechar}
+                />
             )}
         </section>
     );
