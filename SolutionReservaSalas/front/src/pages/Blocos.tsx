@@ -20,7 +20,7 @@ export function Blocos() {
     const [erro, setErro] = useState("");
     const [acao, setAcao] = useState<Acao | null>(null);
 
-    // Busca blocos e salas juntos; as salas alimentam o tooltip de cada bloco
+    // Busca blocos e salas juntos; cada sala vira uma janela do seu bloco
     const carregar = useCallback(() => {
         setErro("");
         Promise.all([api.get<Bloco[]>("/blocos"), api.get<Sala[]>("/salas")])
