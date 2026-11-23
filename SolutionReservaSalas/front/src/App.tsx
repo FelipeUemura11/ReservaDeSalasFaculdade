@@ -3,6 +3,7 @@ import { Layout } from "./layout/Layout";
 import { Home } from "./pages/Home";
 import { Blocos } from "./pages/Blocos";
 import { Salas } from "./pages/Salas";
+import { Reservas } from "./pages/Reservas";
 
 function App() {
     return (
@@ -12,6 +13,7 @@ function App() {
 
                 <Route path="blocos" element={<Blocos />} />
                 <Route path="salas" element={<Salas />} />
+                <Route path="reservas" element={<Reservas />} />
 
                 <Route path="*" element={<Navigate to="/" replace/>} />
             </Route>
