@@ -5,6 +5,7 @@ import { Blocos } from "./pages/Blocos";
 import { Salas } from "./pages/Salas";
 import { Reservas } from "./pages/Reservas";
 import { SalasLivres } from "./pages/SalasLivres";
+import { Agenda } from "./pages/Agenda";
 
 function App() {
     return (
@@ -16,6 +17,7 @@ function App() {
                 <Route path="salas" element={<Salas />} />
                 <Route path="reservas" element={<Reservas />} />
                 <Route path="salas-livres" element={<SalasLivres />} />
+                <Route path="agenda" element={<Agenda />} />
 
                 <Route path="*" element={<Navigate to="/" replace/>} />
             </Route>
