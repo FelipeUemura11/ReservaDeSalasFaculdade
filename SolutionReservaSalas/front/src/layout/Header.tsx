@@ -28,8 +28,17 @@ export function Header() {
                     <NavLink to="/reservas" className={linkClass}>
                         Reservas
                     </NavLink>
+                    <NavLink to="/salas-livres" className={linkClass}>
+                        Salas livres
+                    </NavLink>
+                    <NavLink to="/agenda" className={linkClass}>
+                        Agenda
+                    </NavLink>
+                    <NavLink to="/salas-livres" className={linkClass}>
+                        Salas livres
+                    </NavLink>
                     <NavLink to="/relatorios" className={linkClass}>
-                        Relatorio
+                        Relatório
                     </NavLink>
                 </nav>
             </div>
