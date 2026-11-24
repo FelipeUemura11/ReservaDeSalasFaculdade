@@ -228,6 +228,82 @@ Também é possível testar pelos arquivos `.http` da pasta do projeto (`testeBl
 
 ---
 
+## 💻 Front-end
+
+O front-end é uma aplicação **React + TypeScript** que consome a API e oferece uma interface visual para todas as funcionalidades do sistema.
+
+### Tecnologias do front
+
+- **React 19** com **TypeScript** (criado com Create React App)
+- **React Router** (navegação entre as telas)
+- **Axios** (requisições HTTP para a API em `http://localhost:5220`)
+- **Tailwind CSS v3** (estilização, com as cores da Universidade Positivo definidas em `index.css`)
+
+### Telas
+
+| Rota | Tela | O que faz |
+|---|---|---|
+| `/` | Início | Acesso rápido às telas principais |
+| `/blocos` | Blocos | Blocos desenhados como prédios vistos de cima, com CRUD e salas ao passar o mouse |
+| `/salas` | Salas | Tabela de salas com cadastro, edição e exclusão |
+| `/reservas` | Reservas | Lista as reservas com filtro por status (ativas, canceladas, todas), cria, edita e cancela |
+| `/salas-livres` | Salas livres | Busca salas sem reserva no período, com capacidade mínima, e permite reservar direto do resultado |
+| `/agenda` | Agenda da sala | Mostra as reservas de uma sala em um dia, em linha do tempo |
+| `/relatorios` | Relatório de ocupação | Total de reservas e horas reservadas por sala, com barra comparativa |
+
+No formulário de reserva, os erros devolvidos pela API aparecem dentro do próprio formulário, com um título conforme o código:
+
+| Código | Mensagem exibida |
+|---|---|
+| `400` | **Dados inválidos:** horário de início depois do fim ou capacidade da sala excedida |
+| `404` | **Não encontrado:** sala inexistente |
+| `409` | **Conflito de horário:** a sala já está reservada no período (com o horário e o responsável da reserva existente) |
+
+### Como executar o front
+
+Com a API rodando (veja a seção anterior), em outro terminal:
+
+```bash
+cd ReservaDeSalasFaculdade/SolutionReservaSalas/front
+
+# 1. Instalar as dependências
+npm install
+
+# 2. Executar em modo de desenvolvimento
+npm start
+```
+
+O front abre em `http://localhost:3000`. A API já libera essa origem no CORS (`Program.cs`).
+
+### Estrutura do front
+
+```
+front/src/
+├── App.tsx                  # Declaração das rotas
+├── index.css                # Tailwind e cores do tema (--primary, --secondary, --third)
+├── layout/                  # Header (menu), Footer e Layout com <Outlet />
+├── pages/
+│   ├── Home.tsx
+│   ├── Blocos.tsx
+│   ├── Salas.tsx
+│   ├── Reservas.tsx         # Listagem, filtro por status e ações
+│   ├── SalasLivres.tsx      # Filtros de período e capacidade mínima
+│   ├── Agenda.tsx           # Seleção de sala e data
+│   └── Relatorio.tsx        # Relatório de ocupação
+├── components/
+│   ├── Modal.tsx            # Janela sobreposta usada nos formulários
+│   ├── Blocos/              # Formulário, cadastro, edição, exclusão e mapa do bloco
+│   ├── Salas/               # Formulário, cadastro, edição e exclusão de salas
+│   └── Reservas/            # FormReserva, CadastroReserva, EditarReserva e CancelarReserva
+├── services/
+│   └── api.ts               # Instância do Axios e leitura das mensagens de erro
+├── types/                   # Interfaces TypeScript espelhando as respostas da API
+└── utils/
+    └── datas.ts             # Conversão e formatação de datas e mensagens de erro de reserva
+```
+
+---
+
 ## 📁 Estrutura do Projeto
 
 ```
