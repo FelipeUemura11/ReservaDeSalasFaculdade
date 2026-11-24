@@ -34,12 +34,6 @@ export function Header() {
                     <NavLink to="/agenda" className={linkClass}>
                         Agenda
                     </NavLink>
-                    <NavLink to="/salas-livres" className={linkClass}>
-                        Salas livres
-                    </NavLink>
-                    <NavLink to="/agenda" className={linkClass}>
-                        Agenda
-                    </NavLink>
                     <NavLink to="/relatorios" className={linkClass}>
                         Relatório
                     </NavLink>
