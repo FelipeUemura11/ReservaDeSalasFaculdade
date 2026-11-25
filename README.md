@@ -54,7 +54,7 @@ O **ReservaSalas API** é um sistema back-end desenvolvido em C# com .NET 8 (Min
 ### 🏢 Gerenciamento de Blocos
 Os blocos representam os prédios ou alas da instituição (ex: "Bloco Azul", "Bloco B"). São a base da hierarquia do sistema, porque toda sala pertence a um bloco. A API permite criar, listar, buscar por ID, editar e excluir blocos. Um bloco que ainda possui salas não pode ser excluído, o que evita salas órfãs no banco.
 
-Cada bloco também guarda uma **cor** em hexadecimal (`#RRGGBB`), usada só no visual do front. A API valida o formato no cadastro e na edição e usa vermelho (`#ED1C24`) quando nenhuma cor é enviada. No front, a tela de Blocos desenha cada bloco como o prédio visto de cima, no estilo de um mapa, pintado com a cor escolhida. Ao passar o mouse sobre o desenho, aparecem as salas do bloco com a capacidade de cada uma.
+Cada bloco também guarda uma **cor** em hexadecimal (`#RRGGBB`), usada só no visual do front. A API valida o formato no cadastro e na edição e usa vermelho (`#ED1C24`) quando nenhuma cor é enviada. No front, a tela de Blocos desenha cada bloco como um prédio visto de frente, pintado com a cor escolhida, em que cada sala é uma janela. Ao passar o mouse sobre uma janela (ou tocar nela, no celular), aparecem o nome, o tipo e a capacidade da sala.
 
 ### 🚪 Gerenciamento de Salas
 Esta é a entidade com **CRUD completo**. Cada sala tem nome, capacidade máxima de pessoas e tipo (`SalaDeAula`, `Laboratorio` ou `Auditorio`), e está obrigatoriamente vinculada a um bloco já cadastrado (**relacionamento 1:N** via chave estrangeira `BlocoId`). Na listagem, cada sala aparece com o nome do seu bloco. Uma sala com reservas registradas não pode ser excluída.
@@ -63,11 +63,12 @@ Esta é a entidade com **CRUD completo**. Cada sala tem nome, capacidade máxima
 Para reservar, o usuário informa a sala, o responsável, o motivo (ex: "Aula de Banco de Dados"), a quantidade de pessoas e o horário de início e fim. Antes de salvar, a API executa uma série de validações:
 
 1. O horário de início deve ser anterior ao de término.
-2. A sala informada precisa existir.
-3. A quantidade de pessoas não pode exceder a capacidade da sala.
-4. Não pode haver conflito com outra reserva ativa da mesma sala.
+2. A quantidade de pessoas deve ser maior que zero.
+3. A sala informada precisa existir.
+4. A quantidade de pessoas não pode exceder a capacidade da sala.
+5. Não pode haver conflito com outra reserva ativa da mesma sala.
 
-Se todas passarem, a reserva é criada com status `Ativa` e a API retorna `201 Created`.
+Se todas passarem, a reserva é criada com status `Ativa` e a API retorna `201 Created`. A edição (`PUT`) aplica as mesmas validações e só é permitida em reservas ativas: alterar uma reserva cancelada retorna `400 Bad Request`.
 
 ### ⛔ Prevenção de Conflitos de Horário
 É a principal regra de negócio do sistema. Duas reservas se sobrepõem quando:
@@ -88,13 +89,13 @@ Em vez de apagar a reserva do banco, o endpoint de cancelamento muda seu status 
 O usuário informa um período (`inicio` e `fim`) e, opcionalmente, uma capacidade mínima. A API retorna as salas que **não** possuem nenhuma reserva ativa sobreposta àquele período, com nome, capacidade, tipo e bloco. É útil, por exemplo, para encontrar um laboratório livre para 30 alunos na quinta à noite.
 
 ### 🗓️ Agenda da Sala
-Dada uma sala e uma data, a API lista todas as reservas ativas daquele dia em ordem cronológica, mostrando os horários ocupados.
+Dada uma sala e uma data, a API lista todas as reservas ativas daquele dia em ordem cronológica, mostrando os horários ocupados. Entram também as reservas que atravessam a meia-noite, ou seja, que começaram no dia anterior ou terminam no dia seguinte.
 
 ### 📊 Relatório de Ocupação
 Agrupa as reservas ativas por sala e calcula o total de reservas e de horas reservadas de cada uma, ordenando da mais utilizada para a menos utilizada. O relatório ajuda a identificar espaços sobrecarregados ou subutilizados.
 
 ### 🔒 Integridade dos Dados
-Os relacionamentos usam `DeleteBehavior.Restrict` no Entity Framework. Assim, não é possível excluir um bloco que tem salas ou uma sala que tem reservas, o que garante a consistência do banco.
+Antes de excluir, os endpoints verificam se o bloco tem salas ou se a sala tem reservas (inclusive canceladas) e, nesse caso, recusam a exclusão com `409 Conflict`. Como segunda garantia, os relacionamentos usam `DeleteBehavior.Restrict` no Entity Framework, então o próprio banco também impede a exclusão e mantém a consistência dos dados.
 
 ---
 
@@ -178,7 +179,7 @@ Content-Type: application/json
 | Código | Situação |
 |---|---|
 | `201 Created` | Reserva criada com sucesso |
-| `400 Bad Request` | Horário inválido ou capacidade excedida |
+| `400 Bad Request` | Horário inválido, quantidade de pessoas menor que 1 ou capacidade excedida |
 | `404 Not Found` | Sala não encontrada |
 | `409 Conflict` | Sala já reservada no horário |
 
@@ -222,7 +223,7 @@ dotnet run
 
 O navegador abre automaticamente no Swagger, em `http://localhost:5220/swagger`, onde é possível testar todos os endpoints pelo botão **Try it out**.
 
-Também é possível testar pelos arquivos `.http` da pasta do projeto (`testeBlocos.http`, `testeSalas.http`, `testeReservas.http` e `testeRelatorios.http`), usando a extensão **REST Client** do VS Code.
+Também é possível testar pelos arquivos `.http` da pasta `tests/` do projeto (`testeBlocos.http`, `testeSalas.http`, `testeReservas.http` e `testeRelatorios.http`), usando a extensão **REST Client** do VS Code.
 
 > 💡 O arquivo `reservas.db` é gerado localmente e está no `.gitignore`. Cada integrante cria o seu com `dotnet ef database update`.
 
@@ -244,12 +245,18 @@ O front-end é uma aplicação **React + TypeScript** que consome a API e oferec
 | Rota | Tela | O que faz |
 |---|---|---|
 | `/` | Início | Acesso rápido às telas principais |
-| `/blocos` | Blocos | Blocos desenhados como prédios vistos de cima, com CRUD e salas ao passar o mouse |
-| `/salas` | Salas | Tabela de salas com cadastro, edição e exclusão |
+| `/blocos` | Blocos | Blocos desenhados como prédios vistos de frente (cada janela é uma sala), com CRUD e os dados da sala ao passar o mouse ou tocar na janela |
+| `/salas` | Salas | Lista de salas com cadastro, edição e exclusão |
 | `/reservas` | Reservas | Lista as reservas com filtro por status (ativas, canceladas, todas), cria, edita e cancela |
 | `/salas-livres` | Salas livres | Busca salas sem reserva no período, com capacidade mínima, e permite reservar direto do resultado |
 | `/agenda` | Agenda da sala | Mostra as reservas de uma sala em um dia, em linha do tempo |
 | `/relatorios` | Relatório de ocupação | Total de reservas e horas reservadas por sala, com barra comparativa |
+
+A interface é **responsiva** e funciona em computador, tablet e celular:
+
+- Abaixo de 1024px, o menu vira um botão (☰) que abre a lista de telas.
+- No celular, as tabelas de Salas, Reservas e do Relatório viram cards empilhados.
+- As janelas de cadastro e edição rolam quando o formulário não cabe na tela.
 
 No formulário de reserva, os erros devolvidos pela API aparecem dentro do próprio formulário, com um título conforme o código:
 
@@ -281,7 +288,8 @@ O front abre em `http://localhost:3000`. A API já libera essa origem no CORS (`
 front/src/
 ├── App.tsx                  # Declaração das rotas
 ├── index.css                # Tailwind e cores do tema (--primary, --secondary, --third)
-├── layout/                  # Header (menu), Footer e Layout com <Outlet />
+├── assets/                  # Logos, favicon e imagens da tela inicial
+├── layout/                  # Header (menu, com botão ☰ no celular), Footer e Layout com <Outlet />
 ├── pages/
 │   ├── Home.tsx
 │   ├── Blocos.tsx
@@ -325,11 +333,13 @@ SolutionReservaSalas/
     │   └── Enums.cs
     ├── Properties/
     │   └── launchSettings.json      # Porta da API e abertura automática do Swagger
-    ├── testeBlocos.http             # Requisições de teste de blocos
-    ├── testeSalas.http              # Requisições de teste de salas, salas livres e agenda
-    ├── testeReservas.http           # Requisições de teste de reservas
-    ├── testeRelatorios.http         # Requisição de teste do relatório de ocupação
-    ├── Program.cs                   # Configuração da aplicação e registro das rotas
+    ├── tests/
+    │   ├── testeBlocos.http         # Requisições de teste de blocos
+    │   ├── testeSalas.http          # Requisições de teste de salas, salas livres e agenda
+    │   ├── testeReservas.http       # Requisições de teste de reservas
+    │   └── testeRelatorios.http     # Requisição de teste do relatório de ocupação
+    ├── appsettings.json             # Configurações da aplicação (logs)
+    ├── Program.cs                   # Configuração da aplicação, CORS, Swagger e registro das rotas
     └── ReservaSalas.Api.csproj
 ```
 
@@ -363,8 +373,8 @@ SolutionReservaSalas/
 3. Habilitar **CORS** na API para permitir requisições do front (`http://localhost:3000`).
 4. Instalar o **Axios** e criar a instância base em `services/` apontando para a API (`http://localhost:5220`).
 5. Criar a estrutura de pastas (`pages/`, `components/`, `services/`, `types/`) e o layout com menu de navegação.
-6. Tela de **Blocos**: listar, cadastrar, editar e excluir (com aviso quando o bloco possui salas). Os blocos aparecem desenhados como prédios vistos de cima, com a cor escolhida no cadastro e as salas do bloco ao passar o mouse.
-7. Tela de **Salas**: CRUD com seleção de bloco e tipo (com aviso quando a sala possui reservas).
+6. Tela de **Blocos**: listar, cadastrar, editar e excluir (com aviso quando o bloco possui salas). Os blocos aparecem desenhados como prédios vistos de frente, com a cor escolhida no cadastro e uma janela para cada sala, que mostra os dados da sala ao passar o mouse.
+7. Tela de **Salas**: CRUD com seleção de bloco e tipo (exibe o aviso da API ao tentar excluir uma sala que possui reservas).
 
 **Rafael**
 
@@ -396,8 +406,12 @@ A IA foi usada em etapas, de forma conversacional:
 
 **Estrutura Relacional:** pedi uma ajuda para saber como fazer a ligação entre as tabelas (relacionamento)
 
-**Arquitetura dos endpoints:** ajuda para arquiteturar os endpoints, forma melhor estruturada para separar as funcinalidades
+**Arquitetura dos endpoints:** ajuda para arquiteturar os endpoints, forma melhor estruturada para separar as funcionalidades
 
 **Divisão das tarefas do front-end:** pedimos ajuda para separar as tarefas do front-end entre os integrantes, seguindo a mesma divisão usada no back-end.
 
-**Visual da página de Blocos:** pedimos à IA para trocar a tabela de blocos por um desenho de cada bloco no estilo do mapa do campus visto de cima, usando como referência uma imagem do Bloco Vermelho tirada do GPS. Também pedimos que, ao passar o mouse, aparecesse uma descrição do bloco (a IA sugeriu mostrar as salas e a capacidade de cada uma) e que o cadastro tivesse a opção de escolher uma cor, só para o visual. Para a cor ficar salva, a IA adicionou a propriedade `Cor` no modelo `Bloco`, a validação nos endpoints e a migration `AdicionarCorBloco`. Depois ajustamos manualmente as cores sugeridas e pedimos para mover o nome do bloco para cima do desenho.
+**Visual da página de Blocos:** pedimos à IA para trocar a tabela de blocos por um desenho de cada bloco no estilo do mapa do campus visto de cima, usando como referência uma imagem do Bloco Vermelho tirada do GPS. Também pedimos que, ao passar o mouse, aparecesse uma descrição do bloco (a IA sugeriu mostrar as salas e a capacidade de cada uma) e que o cadastro tivesse a opção de escolher uma cor, só para o visual. Para a cor ficar salva, a IA adicionou a propriedade `Cor` no modelo `Bloco`, a validação nos endpoints e a migration `AdicionarCorBloco`. Depois ajustamos manualmente as cores sugeridas e pedimos para mover o nome do bloco para cima do desenho. Mais tarde, o desenho foi refeito como o prédio visto de frente, em que cada sala é uma janela que mostra o nome, o tipo e a capacidade ao passar o mouse. As migrations também foram unificadas na `InitialCreate`, que já cria a coluna `Cor`.
+
+**Responsividade:** pedimos à IA para adaptar o front para celular e tablet. Ela adicionou a meta tag `viewport` que faltava no `index.html`, trocou o menu por um botão (☰) em telas menores e transformou as tabelas de Salas, Reservas e Relatório em cards no celular. Também fez as janelas de formulário rolarem quando não cabem na tela e permitiu ver os dados das salas no mapa de blocos tocando na janela.
+
+**Revisão do README:** pedimos à IA para conferir se este README estava de acordo com o código. Ela corrigiu a descrição da tela de Blocos, a lista de validações da reserva, o comportamento da agenda e da exclusão e o caminho dos arquivos `.http`, que ficam na pasta `tests/`.
