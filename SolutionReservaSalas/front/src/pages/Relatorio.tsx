@@ -22,7 +22,7 @@ export function Relatorio() {
 
     return (
         <section>
-            <h1 className="mb-6 text-4xl font-bold text-white">Relatório de ocupação</h1>
+            <h1 className="mb-6 text-3xl font-bold text-white sm:text-4xl">Relatório de ocupação</h1>
 
             {carregando && <p className="text-white">Carregando...</p>}
 
@@ -40,7 +40,47 @@ export function Relatorio() {
                         <Resumo rotulo="Horas reservadas" valor={formatarHoras(totalHoras)} />
                     </div>
 
-                    <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
+                    {/* Celular: cada sala vira um card com a barra de horas */}
+                    <ol className="space-y-3 sm:hidden">
+                        {linhas.map((linha, i) => (
+                            <li
+                                key={linha.salaId}
+                                className="rounded-lg border border-gray-200 bg-white p-4"
+                            >
+                                <div className="flex items-baseline justify-between gap-2">
+                                    <h2 className="font-bold text-primary">
+                                        <span className="mr-2 text-sm font-normal text-gray-500">
+                                            {i + 1}º
+                                        </span>
+                                        {linha.sala}
+                                    </h2>
+                                    <span className="text-sm text-gray-600">{linha.bloco}</span>
+                                </div>
+                                <div className="mt-3 h-3 w-full overflow-hidden rounded-full bg-third">
+                                    <div
+                                        className="h-full rounded-full bg-secondary"
+                                        style={{
+                                            width:
+                                                maiorHoras > 0
+                                                    ? `${(linha.horasReservadas / maiorHoras) * 100}%`
+                                                    : "0%",
+                                        }}
+                                    />
+                                </div>
+                                <p className="mt-2 flex justify-between text-sm text-gray-600">
+                                    <span>
+                                        {linha.totalReservas}{" "}
+                                        {linha.totalReservas === 1 ? "reserva" : "reservas"}
+                                    </span>
+                                    <span className="font-medium text-gray-800">
+                                        {formatarHoras(linha.horasReservadas)}
+                                    </span>
+                                </p>
+                            </li>
+                        ))}
+                    </ol>
+
+                    <div className="hidden overflow-x-auto rounded-lg border border-gray-200 bg-white sm:block">
                         <table className="w-full text-left text-sm">
                             <thead className="bg-gray-100 text-gray-600">
                                 <tr>

@@ -202,6 +202,9 @@ export function MapaBloco({
                                 onMouseLeave={() => setSalaAtiva(null)}
                                 onFocus={() => setSalaAtiva(sala.id)}
                                 onBlur={() => setSalaAtiva(null)}
+                                // Em telas de toque não há hover: o toque abre o tooltip
+                                // e tocar fora da janela o fecha (onBlur)
+                                onClick={() => setSalaAtiva(sala.id)}
                             >
                                 {/* Verga e peitoril */}
                                 <rect

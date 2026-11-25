@@ -48,7 +48,7 @@ export function Agenda() {
 
     return (
         <section>
-            <h1 className="mb-6 text-4xl font-bold text-white">Agenda da sala</h1>
+            <h1 className="mb-6 text-3xl font-bold text-white sm:text-4xl">Agenda da sala</h1>
 
             <div className="mb-6 grid gap-4 rounded-lg bg-white p-4 shadow-[8px_8px_1px_-1px_var(--secondary)] sm:grid-cols-2">
                 <div>

@@ -51,11 +51,11 @@ export function SalasLivres() {
 
     return (
         <section>
-            <h1 className="mb-6 text-4xl font-bold text-white">Salas livres</h1>
+            <h1 className="mb-6 text-3xl font-bold text-white sm:text-4xl">Salas livres</h1>
 
             <form
                 onSubmit={buscar}
-                className="mb-6 grid gap-4 rounded-lg bg-white p-4 shadow-[8px_8px_1px_-1px_var(--secondary)] sm:grid-cols-4"
+                className="mb-6 grid gap-4 rounded-lg bg-white p-4 shadow-[8px_8px_1px_-1px_var(--secondary)] sm:grid-cols-2 lg:grid-cols-4"
             >
                 <div>
                     <label htmlFor="inicio" className={classeRotulo}>
@@ -97,7 +97,7 @@ export function SalasLivres() {
                         className={classeCampo}
                     />
                 </div>
-                <div className="flex items-end">
+                <div className="flex items-end sm:col-span-2 lg:col-span-1">
                     <button
                         type="submit"
                         disabled={buscando}

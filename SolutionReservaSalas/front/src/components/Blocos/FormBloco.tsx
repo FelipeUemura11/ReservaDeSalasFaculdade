@@ -93,7 +93,7 @@ export function FormBloco({
                 <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">{erro}</p>
             )}
 
-            <div className="flex justify-end gap-3">
+            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
                 <button
                     type="button"
                     onClick={onCancelar}

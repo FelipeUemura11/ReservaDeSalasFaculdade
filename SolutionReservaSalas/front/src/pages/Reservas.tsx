@@ -65,8 +65,8 @@ export function Reservas() {
 
     return (
         <section>
-            <div className="mb-6 flex items-center justify-between">
-                <h1 className="text-4xl font-bold text-white">Reservas</h1>
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+                <h1 className="text-3xl font-bold text-white sm:text-4xl">Reservas</h1>
                 <button
                     onClick={() => setAcao({ tipo: "cadastrar" })}
                     className="rounded-3xl bg-secondary px-4 py-2 text-md font-semibold text-white shadow-xl transition-colors hover:bg-blue-500"
@@ -75,7 +75,7 @@ export function Reservas() {
                 </button>
             </div>
 
-            <div className="mb-4 flex gap-2">
+            <div className="mb-4 flex flex-wrap gap-2">
                 {FILTROS.map((f) => (
                     <button
                         key={f}
@@ -99,8 +99,57 @@ export function Reservas() {
                 <p className="text-white">Nenhuma reserva encontrada.</p>
             )}
 
+            {/* Celular: cada reserva vira um card */}
             {visiveis.length > 0 && (
-                <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
+                <ul className="space-y-3 md:hidden">
+                    {visiveis.map((reserva) => (
+                        <li
+                            key={reserva.id}
+                            className={`rounded-lg border border-gray-200 bg-white p-4 shadow-[6px_6px_1px_-1px_var(--secondary)] ${
+                                reserva.status === "Cancelada" ? "text-gray-400" : ""
+                            }`}
+                        >
+                            <div className="flex items-start justify-between gap-2">
+                                <h2
+                                    className={`font-bold ${
+                                        reserva.status === "Cancelada" ? "" : "text-primary"
+                                    }`}
+                                >
+                                    {reserva.sala}
+                                </h2>
+                                <SeloStatus status={reserva.status} />
+                            </div>
+                            <p className="mt-1">{reserva.motivo}</p>
+                            <p className="text-sm text-gray-600">
+                                {reserva.responsavel} · {reserva.quantidadePessoas} pessoas
+                            </p>
+                            <p className="mt-2 text-sm">
+                                {formatarDataHora(reserva.inicio)} até{" "}
+                                {formatarDataHora(reserva.fim)}
+                            </p>
+                            {reserva.status === "Ativa" && (
+                                <div className="mt-3 flex justify-end gap-5 text-sm">
+                                    <button
+                                        onClick={() => setAcao({ tipo: "editar", reserva })}
+                                        className="py-1 font-medium text-secondary hover:underline"
+                                    >
+                                        Editar
+                                    </button>
+                                    <button
+                                        onClick={() => setAcao({ tipo: "cancelar", reserva })}
+                                        className="py-1 font-medium text-red-600 hover:underline"
+                                    >
+                                        Cancelar
+                                    </button>
+                                </div>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            )}
+
+            {visiveis.length > 0 && (
+                <div className="hidden overflow-x-auto rounded-lg border border-gray-200 bg-white md:block">
                     <table className="w-full text-left text-sm">
                         <thead className="bg-gray-100 text-gray-600">
                             <tr>
